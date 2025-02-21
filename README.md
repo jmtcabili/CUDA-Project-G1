@@ -9,23 +9,24 @@ Members
 
 ## Report
 ### C Output Screenshot
-![Screenshot 2025-02-21 191733](https://github.com/user-attachments/assets/3f5cf701-b13a-4f08-8eb7-8458f5b98b42)
+<img src="https://github.com/user-attachments/assets/3f5cf701-b13a-4f08-8eb7-8458f5b98b42" alt="COutput" width="500"/>
 
 ### Unified Memory Output Screenshot 
-![image](https://github.com/user-attachments/assets/0b123908-c2be-4cc3-b498-a973f9f8eaa5)
-![image](https://github.com/user-attachments/assets/81e4e4d0-5211-468a-9727-9aac0672359f)
+<img src="https://github.com/user-attachments/assets/0b123908-c2be-4cc3-b498-a973f9f8eaa5" alt="UNF1" width="500"/>
+<img src="https://github.com/user-attachments/assets/81e4e4d0-5211-468a-9727-9aac0672359f" alt="UNF2" width="500"/>
+
 
 ### Prefetching of Data with Memory Advise Output Screenshot
-![image](https://github.com/user-attachments/assets/4ba36b04-50c7-46a5-a3e1-6557e54b1c4f)
-![image](https://github.com/user-attachments/assets/f72e555a-987d-4e58-8ccb-8f711d26447a)
+<img src="https://github.com/user-attachments/assets/4ba36b04-50c7-46a5-a3e1-6557e54b1c4f" alt="PRF1" width="500"/>
+<img src="https://github.com/user-attachments/assets/f72e555a-987d-4e58-8ccb-8f711d26447a" alt="PRF2" width="500"/>
 
 ### Data Initialization in CUDA Kernel Output Screenshot
-![image](https://github.com/user-attachments/assets/dbcd1bfa-cf4d-41de-9bd9-ef87e42b44ed)
-![image](https://github.com/user-attachments/assets/0422ee13-fd4a-4b1b-bce4-fd63b8a014c3)
+<img src="https://github.com/user-attachments/assets/dbcd1bfa-cf4d-41de-9bd9-ef87e42b44ed" alt="DATIN1" width="500"/>
+<img src="https://github.com/user-attachments/assets/0422ee13-fd4a-4b1b-bce4-fd63b8a014c3" alt="DATIN2" width="500"/>
 
 ### Old Data Transfer Method Output Screenshot
-![image](https://github.com/user-attachments/assets/c6d0c8e7-2c48-4ae4-90e2-4a335b8d9e8d)
-![image](https://github.com/user-attachments/assets/89d08e9b-56e4-4980-92de-e6e12d75be55)
+<img src="https://github.com/user-attachments/assets/c6d0c8e7-2c48-4ae4-90e2-4a335b8d9e8d" alt="OLD1" width="500"/>
+<img src="https://github.com/user-attachments/assets/89d08e9b-56e4-4980-92de-e6e12d75be55" alt="OLD2" width="500"/>
 
 All outputs had an error count of 0 and the 1-D Convolution operation was completed in each of the data transfer methods. 
 

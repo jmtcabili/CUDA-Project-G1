@@ -49,14 +49,14 @@ Observations:
 2. Of the four implementations, the prefetching with memadvise performed the best with 185.97 ms and 499.44 ms with single kernel and multiple kernel runs, respectively.  
 3. On multiple kernel run, an improvement in the minimum time can be observed across all implementations that can be attributed to reduced overhead time when running programs on multiple instances. 
 
-Disclaimer: 
+Caveats: 
 1. Total time operation was the sum of GPU Activities(averages) + DeviceToHost + HostToDevice + Page Fault (if present) 
 2. Calculations can be found at (Appendix A).
-3. Some implementations such as the data initialization using cuda & old data transfer method have multiple GPU activities that were included in the total time operation. 
-- GPU Activities for data initialization using cuda:  conv1D_kernel(unsigned long, float*, float*), initData(unsigned long, float*)
-- GPU Activities for old data transfer method: [CUDA memcpy DtoH], Conv1D(unsigned long, float*, float*), [CUDA memcpy HtoD]
+3. Some implementations such as the data initialization using cuda & old data transfer method have multiple GPU activities that were included in the total time operation.
+    GPU Activities for data initialization using cuda:  conv1D_kernel(unsigned long, float*, float*), initData(unsigned long, float*)
+    GPU Activities for old data transfer method: [CUDA memcpy DtoH], Conv1D(unsigned long, float*, float*), [CUDA memcpy HtoD]
 
-**
+
 
 **Unified Memory Profile - Page Fault Comparison** 
 
@@ -64,6 +64,21 @@ Disclaimer:
 
 Among the four data transfer methods tested, only Unified memory and Data Initialization in the CUDA Kernel resulted in page faults. Unified memory had a longer page fault time than the Data Initialization CUDA Kernel. Page faults occurred on the Unified Memory approach since, at the time the CUDA Kernel attempted to perform the convolution operation, the data had still not been transferred to the device memory. The same can when data was initialized in the CUDA Kernel. Despite both methods already allocating device memory for their data, it is important to note that cudaMallocManaged() does not explicitly store the data yet into the GPU’s memory, so trying to manage variables from the kernel will still result in page faults [https://stackoverflow.com/questions/77624064/getting-gpu-page-fault-by-initializing-data-in-a-kernel]. In the case of the old transfer method, no page fault is observed since cudaMemcpy already transferred the data from host to device, prepping the data to handled by the GPU. 
 
+**Unified Memory Profile - Data Transfer Comparison**
+![image](https://github.com/user-attachments/assets/134866d2-56d5-492e-a2cf-bf2f22b1e68d)
+Observation:
+Old Data Transfer Method took the longest time to transfer data in both Host-to-Device and Device-to-Host. The automatic management and transfer of memory between devices through unified memory performs much better at transferring data as it is 72% faster from host to device and 76% when data moves from device to host. Further improvements are seen with prefetching with mem advise. According to the CUDA programming tutorial by NVIDIA, the reason for the improvement in unified memory lies in the unified and ease of access to data without the need for manual allocation (cudaMalloc) and movement (cudaMemcpy). Especially in the current project, where multiple iterations, unified memory can minimize the distance between the devices that use it often, making it a faster approach to handle how data is migrated between host and device. Then, with initializing data on the CUDA kernel, it performs similar to the plain Unified Memory approach, but since data was initialized in the device kernel, it only has to transfer from device to host. 
+
+https://docs.nvidia.com/cuda/cuda-c-programming-guide/#unified-memory-programming 
+
+
+**Different quantities of threads - Performance comparison**
+![image](https://github.com/user-attachments/assets/056c21fa-ad89-4652-bdb6-eadbc475269b)
+
+Observations: 
+1. On the four implementations of the program, the worst performing block size tends to vary per implementation as seen on the table. For example, on the old data transfer method, even though having the maximum number of threads(1024 threads) count performed the fastest, the block with 256 threads performed the worst. Moreover, in prefetching, the block with the maximum number of threads performed the worst. Lastly, although in the unified memory and data initialization the block wiith 32 threads performed the worst, in data initialization, the block with 512 threads performed the second worst.
+        
+2. Intuitively, a higher thread count should result in a better run time as there are more workers deployed to execute the program. However, in doing this performance comparison under varying quantities of threads, the intuition is proven wrong as this is not the case. Upon research, it was discovered that understanding the constraints of the kernel as well as the GPU it is running on is vital in choosing a block size [https://developer.nvidia.com/blog/cuda-pro-tip-occupancy-api-simplifies-launch-configuration/]. This is where the term occupancy comes in. Occupancy refers to the ratio of active warps on a Streaming Multiprocessor (SM) to the maximum number of active warps that can be supported by the SM[https://docs.nvidia.com/gameworks/content/developertools/desktop/analysis/report/cudaexperiments/kernellevel/achievedoccupancy.htm#:~:text=Occupancy%20is%20defined%20as%20the,be%20different%20for%20each%20SM.]. Moreover, it was affirmed here that having a higher occupancy does not always lead to better performance, hence choosing an appropriate block size is critical.
 
 
 ### Problems Encountered

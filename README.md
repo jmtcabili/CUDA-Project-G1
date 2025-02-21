@@ -6,7 +6,7 @@ Members
 4. Geo Brian P. Hilomen
 
 ## Link to YouTube Video
-
+https://youtu.be/rHbWhAE5Jws
 ## Report
 ### C Output Screenshot
 <img src="https://github.com/user-attachments/assets/3f5cf701-b13a-4f08-8eb7-8458f5b98b42" alt="COutput" width="500"/>

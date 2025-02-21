@@ -80,9 +80,13 @@ Observations:
         
 2. Intuitively, a higher thread count should result in a better run time as there are more workers deployed to execute the program. However, in doing this performance comparison under varying quantities of threads, the intuition is proven wrong as this is not the case. Upon research, it was discovered that understanding the constraints of the kernel as well as the GPU it is running on is vital in choosing a block size [https://developer.nvidia.com/blog/cuda-pro-tip-occupancy-api-simplifies-launch-configuration/]. This is where the term occupancy comes in. Occupancy refers to the ratio of active warps on a Streaming Multiprocessor (SM) to the maximum number of active warps that can be supported by the SM[https://docs.nvidia.com/gameworks/content/developertools/desktop/analysis/report/cudaexperiments/kernellevel/achievedoccupancy.htm#:~:text=Occupancy%20is%20defined%20as%20the,be%20different%20for%20each%20SM.]. Moreover, it was affirmed here that having a higher occupancy does not always lead to better performance, hence choosing an appropriate block size is critical.
 
+Formula for calculating performance:
+- Old Data Transfer Time = memcpy HtoD + kernel execution (30 loops) + memcpy DtoH
+- Unified Memory = execution time + page fault
+- Data Initialization through CUDA Kernel = execution time  + page fault 
+- Prefetching with Memadvise = execution time + data transfer
 
 ### Problems Encountered
-
 
 ### Appendices
 

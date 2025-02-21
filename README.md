@@ -55,11 +55,13 @@ Disclaimer:
 - GPU Activities for data initialization using cuda:  conv1D_kernel(unsigned long, float*, float*), initData(unsigned long, float*)
 - GPU Activities for old data transfer method: [CUDA memcpy DtoH], Conv1D(unsigned long, float*, float*), [CUDA memcpy HtoD]
 
+**
+
 **Unified Memory Profile - Page Fault Comparison** 
 
 ![image](https://github.com/user-attachments/assets/e9ca2c4f-4baf-4da1-89d3-efde4dabecaf)
 
-Among the four data transfer methods tested, only Unified memory and Data Initialization in the CUDA Kernel resulted in page faults. Unified memory had a longer page fault time than the Data Initialization CUDA Kernel. Page faults occurred on the Unified Memory approach since, at the time the CUDA Kernel attempted to perform the convolution operation, the data had still not been transferred to the device memory. The same can when data was initialized in the CUDA Kernel. Despite both methods already allocating device memory for their data, it is important to note that cudaMallocManaged() does not explicitly store the data yet into the GPU’s memory, so trying to manage variables from the kernel will still result in page faults [https://stackoverflow.com/questions/77624064/getting-gpu-page-fault-by-initializing-data-in-a-kernel]. 
+Among the four data transfer methods tested, only Unified memory and Data Initialization in the CUDA Kernel resulted in page faults. Unified memory had a longer page fault time than the Data Initialization CUDA Kernel. Page faults occurred on the Unified Memory approach since, at the time the CUDA Kernel attempted to perform the convolution operation, the data had still not been transferred to the device memory. The same can when data was initialized in the CUDA Kernel. Despite both methods already allocating device memory for their data, it is important to note that cudaMallocManaged() does not explicitly store the data yet into the GPU’s memory, so trying to manage variables from the kernel will still result in page faults [https://stackoverflow.com/questions/77624064/getting-gpu-page-fault-by-initializing-data-in-a-kernel]. In the case of the old transfer method, no page fault is observed since cudaMemcpy already transferred the data from host to device, prepping the data to handled by the GPU. 
 
 
 

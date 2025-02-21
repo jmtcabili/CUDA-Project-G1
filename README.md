@@ -50,7 +50,7 @@ Observations:
 
 Disclaimer: 
 1. Total time operation was the sum of GPU Activities(averages) + DeviceToHost + HostToDevice + Page Fault (if present) 
-2. Calculations can be found here.
+2. Calculations can be found at (Appendix A).
 3. Some implementations such as the data initialization using cuda & old data transfer method have multiple GPU activities that were included in the total time operation. 
 - GPU Activities for data initialization using cuda:  conv1D_kernel(unsigned long, float*, float*), initData(unsigned long, float*)
 - GPU Activities for old data transfer method: [CUDA memcpy DtoH], Conv1D(unsigned long, float*, float*), [CUDA memcpy HtoD]
@@ -66,3 +66,11 @@ Among the four data transfer methods tested, only Unified memory and Data Initia
 
 
 ### Problems Encountered
+
+
+### Appendices
+
+Appendix A:
+
+<img src="https://github.com/user-attachments/assets/fb11fd26-bc5f-4a66-9b21-f7a4a676f499" alt="AppendixA" width="500"/>
+
